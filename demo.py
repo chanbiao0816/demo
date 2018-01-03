@@ -7,26 +7,18 @@
 @File    : demo.py
 @Function: 
 """
-from PIL import Image
-from numpy import *
-from pylab import *
 from numpy import random
+from pylab import *
 from scipy.ndimage import filters
-import rof
+from PIL import Image
+from part import harris
+from base import rof
 
-im = zeros((500, 500))
-im[100:400, 100:400] = 128
-im[200:300, 200:300] = 255
-
-im = im + 30 * random.standard_normal((500, 500))
-
-U, T = rof.de_noise(im, im)
-G = filters.gaussian_filter(im, 10)
-
-# 保存生成结果
-from scipy.misc import imsave
-imsave('synth_rof.pdf', U)
-imsave('synth_gaussian.pdf', G)
+if __name__ == '__main__':
+    im = array(Image.open("empire.jpg").convert("L"))
+    harris_im = harris.compute_harris_response(im)
+    filtered_coord_s = harris.get_harris_points(harris_im, 6, threshold=0.01)
+    harris.plot_harris_points(im, filtered_coord_s)
 
 
 
