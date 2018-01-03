@@ -10,7 +10,6 @@
 
 from pylab import *
 from PIL import Image
-from numpy import *
 
 
 def im_resize(im, sz):
@@ -45,23 +44,6 @@ def compute_average(im_list):
     # 返回uint8类型的平均图像
     return array(average_im, 'uint8')
 
-def pca(X):
-    """主成分分析：
-        输入：矩阵X，其中该矩阵中存储训练数据，每一行为一条训练数据
-        返回：投影矩阵（按照维度的重要性排序）、方差和均值"""
 
-    # 获取维数
-    num_data, dim = X.shape
-
-    # 数据中心化
-    mean_X = X.mean(axis=0)
-    X = X - mean_X
-
-    if dim > num_data:
-        # PCA- 使用紧致技巧
-        M = dot(X, X.T)     # 协方差矩阵
-        e, EV = linalg.eigh(M)  # 特征值和特征向量
-        tmp = dot(X.T, EV).T    # 这就是紧致技巧
-        V = tmp[::-1]   # 由于最后的特征向量是我们所需要的，所以需要将其逆转
 
 
