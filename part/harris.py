@@ -120,3 +120,32 @@ def match_two_sided(desc1, desc2, threshold=0.5):
 
 def append_images(im1, im2):
     """返回将两幅图像并排拼接成的一副新图像"""
+
+    # 选取具有最少行数的图像，然后填充足够的空行
+    rows1 = im1.shape[0]
+    rows2 = im2.shape[0]
+
+    if rows1 < rows2:
+        im1 = concatenate((im1, zeros((rows2-rows1, im1.shape[1]))), axis=0)
+    elif rows1 > rows2:
+        im2 = concatenate((im2, zeros((rows1-rows2, im2.shape[1]))), axis=0)
+
+    return concatenate((im1, im2), axis=1)
+
+def plot_matches(im1, im2, loc1, loc2, match_scores, show_below=True):
+    """显示一副带有连接匹配之间连线的图片
+        输入：im1，im2（数组图像），loc1，loc2（特征位置），match_scores（match（）的输出）
+        show_below（如果图像应该是显示匹配的下方）"""
+
+    im3 = append_images(im1, im2)
+    if show_below:
+        im3 = vstack((im3, im3))
+
+    imshow(im3)
+
+    cols1 = im1.shape[1]
+    for i, m in enumerate(match_scores):
+        if m > 0:
+            plot([loc1[i][1], loc2[m][1]+cols1], [loc1[i][0], loc2[m][0]], 'c')
+        axis("off")
+

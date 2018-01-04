@@ -13,12 +13,19 @@ from scipy.ndimage import filters
 from PIL import Image
 from part import harris
 from base import rof
+from part import sift
 
 if __name__ == '__main__':
-    im = array(Image.open("empire.jpg").convert("L"))
-    harris_im = harris.compute_harris_response(im)
-    filtered_coord_s = harris.get_harris_points(harris_im, 6, threshold=0.01)
-    harris.plot_harris_points(im, filtered_coord_s)
+    im_name = "empire.jpg"
+    im = array(Image.open(im_name).convert("L"))
+    sift.process_image(im_name, 'empire.sift')
+    l1, d1 = sift.read_features_from_file("empire.sift")
+
+    figure()
+    gray()
+    sift.plot_features(im, l1)
+    print("done")
+    show()
 
 
 
